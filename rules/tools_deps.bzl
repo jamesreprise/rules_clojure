@@ -91,12 +91,15 @@ java_binary(name="gen_srcs",
 def _symlink_repository(repository_ctx):
     repository_ctx.symlink(repository_ctx.os.environ["HOME"] + "/.m2/repository", repository_ctx.path("repository"))
 
+# def _install_rules_clojure(repository_ctx):
+#     repository_ctx.symlink(repository_ctx.path("../rules_clojure/src"), repository_ctx.path(""))
+
 def _run_gen_build(repository_ctx):
     args = [repository_ctx.path("tools.deps/bin/clojure"),
             "-Srepro",
             "-Sdeps", """{:paths ["%s"]
             :deps {org.clojure/tools.namespace {:mvn/version "1.1.0"}
-            org.clojure/tools.deps.alpha {:mvn/version "0.14.1178"}}}""" % repository_ctx.path("../rules_clojure/src"),
+            org.clojure/tools.deps.alpha {:mvn/version "0.14.1178"}}}""" % repository_ctx.path("../rules_clojure~/src"),
 
             "-J-Dclojure.main.report=stderr",
             "-M",
@@ -117,6 +120,7 @@ def _tools_deps_impl(repository_ctx):
     _add_deps_edn(repository_ctx)
     _symlink_repository(repository_ctx)
     _install_scripts(repository_ctx)
+    # _install_rules_clojure(repository_ctx)
     _run_gen_build(repository_ctx)
     return None
 
@@ -127,7 +131,7 @@ clojure_tools_deps = repository_rule(
              "clj_version": attr.string(default="1.11.1.1347"),
              "env": attr.string_dict(default = {}),
              "_rules_clj_deps": attr.label(default="@rules_clojure//:deps.edn"),
-             "_rules_clj_src": attr.label(default="@rules_clojure//:src")})
+             "_rules_clj_src": attr.label(default="@rules_clojure//src/rules_clojure:toolchain_files")})
 
 def clojure_gen_srcs(name):
     native.alias(name=name,

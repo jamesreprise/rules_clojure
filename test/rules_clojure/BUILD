@@ -3,10 +3,10 @@ load("//:rules.bzl", "clojure_library", "clojure_test")
 package(default_visibility = ["//visibility:public"])
 
 ##
-ClojureJars=["@rules_clojure_maven_deps//:org_clojure_clojure",
-             "@rules_clojure_maven_deps//:org_clojure_spec_alpha",
-             "@rules_clojure_maven_deps//:org_clojure_core_specs_alpha",
-             "@rules_clojure_maven_deps//:org_clojure_tools_deps_alpha"]
+ClojureJars=["@frozen_deps//:org_clojure_clojure",
+             "@frozen_deps//:org_clojure_spec_alpha",
+             "@frozen_deps//:org_clojure_core_specs_alpha",
+             "@frozen_deps//:org_clojure_tools_deps_alpha"]
 
 clojure_library(name="test-utils",
                 aot=["rules-clojure.test-utils"],
@@ -47,12 +47,12 @@ clojure_test(name="persistent-classloader-test",
                    ":clojure-old",
                    "@bazel_tools//tools/java/runfiles",
                    "//src/rules_clojure:bootstrap",
-                   "@rules_clojure_maven_deps//:org_clojure_tools_namespace",
-                   "@rules_clojure_maven_deps//:org_clojure_tools_reader",
-                   "@rules_clojure_maven_deps//:org_clojure_java_classpath"],
+                   "@frozen_deps//:org_clojure_tools_namespace",
+                   "@frozen_deps//:org_clojure_tools_reader",
+                   "@frozen_deps//:org_clojure_java_classpath"],
              env={"CLOJURE_JARS": "$(rlocationpaths :clojure)",
                   "CLOJURE_OLD": "$(rlocationpaths :clojure-old)",
-                  "COMPILE_CLASSPATH": "$(rlocationpaths :clojure) $(rlocationpaths //src/rules_clojure:bootstrap) $(rlocationpaths @rules_clojure_maven_deps//:org_clojure_tools_namespace) $(rlocationpaths @rules_clojure_maven_deps//:org_clojure_tools_reader) $(rlocationpaths @rules_clojure_maven_deps//:org_clojure_java_classpath) $(rlocationpaths :test-deps) $(rlocationpaths @bazel_tools//tools/java/runfiles)"},
+                  "COMPILE_CLASSPATH": "$(rlocationpaths :clojure) $(rlocationpaths //src/rules_clojure:bootstrap) $(rlocationpaths @frozen_deps//:org_clojure_tools_namespace) $(rlocationpaths @frozen_deps//:org_clojure_tools_reader) $(rlocationpaths @frozen_deps//:org_clojure_java_classpath) $(rlocationpaths :test-deps) $(rlocationpaths @bazel_tools//tools/java/runfiles)"},
              test_ns = "rules-clojure.persistent-classloader-test")
 
 clojure_test(name="compile-test",
