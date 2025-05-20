@@ -3,3 +3,5 @@ test --verbose_failures
 
 build --java_runtime_version=local_jdk
 build --tool_java_runtime_version=local_jdk
+
+common --enable_bzlmod

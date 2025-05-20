@@ -3,3 +3,5 @@
 .ijwb/
 .lsp/
 bazel-*
+
+.clj-kondo/
