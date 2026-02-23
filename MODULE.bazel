@@ -43,7 +43,7 @@ maven.install(
         "org.clojure:data.json:2.4.0",
         "org.clojure:java.classpath:1.0.0",
         "org.clojure:tools.namespace:1.1.0",
-        "org.clojure:tools.deps.alpha:0.14.1212"
+        "org.clojure:tools.deps:0.28.1578"
     ],
     # When updating versions, run `REPIN=1 bazel run @rules_clojure_maven_deps//:pin`
     fail_if_repin_required = True,
