@@ -92,6 +92,11 @@ Delegates to `java_test`, using `rules-clojure.testrunner` as the main class. `c
 
 When bazel sets `XML_OUTPUT_FILE` (it does for every test action), the runner also writes a JUnit XML report there, with one `<testcase>` per `deftest` (including per-test timing) and `<failure>`/`<error>` detail. This means callers (e.g. CI) get structured, per-test results to display, rather than just relying on bazel's bare pass/fail exit code.
 
+A `main_class` can be supplied, which must refer to a _class_ (see [`gen-class`](https://clojuredocs.org/clojure.core/gen-class)).
+The main entrypoint will be called with one argument: The Clojure namespace to test.
+It should write a JUnit XML report to `$XML_OUTPUT_FILE` and exit with 0 for a pass and non-zero for failure.
+See the [default runner](https://github.com/griffinbank/rules_clojure/blob/e3eabc6621ebc3280410da2a20b56929d63e76ae/src/rules_clojure/testrunner.clj) for inspiration.
+
 ## tools.deps dependencies (optional)
 In your WORKSPACE:
 ```

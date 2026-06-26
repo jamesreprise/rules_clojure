@@ -45,14 +45,14 @@ clojure_repl = rule(
     toolchains = ["@bazel_tools//tools/jdk:toolchain_type"],
     implementation = _clojure_repl_impl)
 
-def clojure_test(name, *, test_ns, deps=[], runtime_deps=[], **kwargs):
+def clojure_test(name, *, test_ns, deps=[], runtime_deps=[], main_class="rules_clojure.testrunner", **kwargs):
     # ideally the library name and the bin name would be the same. They can't be.
     # clojure src files would like to depend on `foo_test`, so mangle the test binary, not the src jar name
 
     native.java_test(name=name,
                      runtime_deps = deps + runtime_deps + ["@rules_clojure//src/rules_clojure:testrunner"],
                      use_testrunner = False,
-                     main_class="rules_clojure.testrunner",
+                     main_class=main_class,
                      args = [test_ns],
                      **kwargs)
 
