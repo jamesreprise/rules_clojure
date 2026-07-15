@@ -118,6 +118,9 @@ def _run_gen_build(ctx):
         fail("gen build failed:", ret.return_code, ret.stdout, ret.stderr)
 
 def _tools_deps_impl(repository_ctx):
+    # Refetch whenever deps.edn's contents change, but still support
+    # reproducibility because outputs are dependent on inputs.
+    repository_ctx.watch(repository_ctx.path(repository_ctx.attr.deps_edn))
     _install_tools_deps(repository_ctx)
     _symlink_repository(repository_ctx)
     _run_gen_build(repository_ctx)
