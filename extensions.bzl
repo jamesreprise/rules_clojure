@@ -6,14 +6,15 @@ _install = tag_class(attrs = {"repo_name": attr.string(),
                               "env": attr.string_dict(default = {})})
 
 def _module_impl(ctx):
-    repos = []
+    root_repos = []
     root_module_name = None
     for mod in ctx.modules:
         if mod.is_root:
             root_module_name = mod.name
+            for attr in mod.tags.install:
+                root_repos.append(attr.repo_name)
+                ctx.watch(attr.deps_edn)
         for attr in mod.tags.install:
-            repos.append(attr.repo_name)
-            ctx.watch(attr.deps_edn)
             clojure_tools_deps(name = attr.repo_name,
                                repo_name = attr.repo_name,
                                aliases = attr.aliases,
@@ -21,7 +22,7 @@ def _module_impl(ctx):
                                deps_edn = attr.deps_edn,
                                env = attr.env,
                                root_module_name = root_module_name or "")
-    return ctx.extension_metadata(root_module_direct_deps="all",
+    return ctx.extension_metadata(root_module_direct_deps=root_repos,
                                   root_module_direct_dev_deps=[],
                                   reproducible = True)
 
